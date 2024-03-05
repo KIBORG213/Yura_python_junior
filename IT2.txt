@@ -1,0 +1,53 @@
+import telebot
+from telebot import types
+
+bot = telebot.TeleBot("YOUR_TELEGRAM_BOT_TOKEN")
+
+user_data = {}
+
+@bot.message_handler(commands=['start'])
+def start_message(message):
+    bot.send_message(message.chat.id, "Зареєструйтеся:")
+    bot.send_message(message.chat.id, "Введіть своє ім'я:")
+    bot.register_next_step_handler(message, get_name)
+
+def get_name(message):
+    user_data[message.chat.id] = {'name': message.text}
+    bot.send_message(message.chat.id, "Введіть свій вік:")
+    bot.register_next_step_handler(message, get_age)
+
+def get_age(message):
+    user_data[message.chat.id]['age'] = message.text
+    bot.send_message(message.chat.id, "Введіть номер телефону:")
+    bot.register_next_step_handler(message, get_phone)
+
+def get_phone(message):
+    user_data[message.chat.id]['phone'] = message.text
+    bot.send_message(message.chat.id, "Вас зареєстровано.")
+
+    markup = types.ReplyKeyboardMarkup()
+    markup.row('English', 'German')
+    markup.row('French', 'Spanish')
+    markup.row('Korean')
+    bot.send_message(message.chat.id, "Виберіть мову:", reply_markup=markup)
+    bot.register_next_step_handler(message, select_language)
+
+def select_language(message):
+    language = message.text.lower()
+    if language == 'english':
+        bot.send_message(message.chat.id, "Hello!")
+    elif language == 'german':
+        bot.send_message(message.chat.id, "Hallo!")
+    elif language == 'french':
+        bot.send_message(message.chat.id, "Bonjour!")
+    elif language == 'spanish':
+        bot.send_message(message.chat.id, "¡Hola!")
+    elif language == 'korean':
+        bot.send_message(message.chat.id, "안녕하세요!")
+    else:
+        bot.send_message(message.chat.id, "Unsupported language.")
+
+    bot.send_message(message.chat.id, "All questions go here: [chatcpt]")
+    bot.send_message(message.chat.id, "Робота завершено.")
+
+bot.polling()

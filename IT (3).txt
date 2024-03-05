@@ -1,0 +1,71 @@
+import telebot
+from telebot import types
+
+TOKEN = "7136259253:AAGWkLU0TdlKizgP1N5hv6ZQuArYhmxHlTw"
+
+bot = telebot.TeleBot(TOKEN)
+
+#### REPLY KEYBOARD MARKUP
+def r_main_menu():
+    main_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    main_menu.row("Показати під-меню", "Видалити акаунт 🗑")
+    main_menu.row("Показатиvменю")
+    return main_menu
+
+
+def r_sub_menu():
+    sub_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    sub_menu.row("France", "Polska")
+    sub_menu.row("Ukraine")
+    sub_menu.row("Germany", "Britannia", "English")
+    sub_menu.row("НАЗАД")
+    return sub_menu
+
+
+#### INLINE KEYBOARD MARKUP
+def i_test_menu():
+    test_menu = types.InlineKeyboardMarkup()
+    test_menu.row(types.InlineKeyboardButton("Текст", callback_data="txt"),
+                  types.InlineKeyboardButton("Картинка", callback_data="img"))
+    test_menu.row(types.InlineKeyboardButton("Документ", callback_data="doc"))
+    return test_menu
+
+
+@bot.callback_query_handler(func=lambda call: call.data)
+def process_callback(callback_query):
+    data = callback_query.data
+    chat_id = callback_query.from_user.id
+    if data == "txt":
+        bot.send_message(chat_id, "You pressed Option 1")
+    elif data == "img":
+        bot.send_photo(chat_id, "https://picsum.photos/200/300", caption="Media group caption")
+    elif data == "doc":
+        bot.send_contact(chat_id, '380969999999', "John")
+
+
+@bot.message_handler(commands=['start'])
+def command_start_handler(message):
+    bot.send_message(message.chat.id, f"Hello, {message.from_user.first_name}!", reply_markup=r_main_menu())
+
+
+@bot.message_handler(func=lambda message: True)
+def echo_handler(message):
+    try:
+        bot.send_message(message.chat.id, message.text)
+
+        if message.text == "0_0":
+            bot.send_message(message.chat.id, 'I know, this is your group!')
+        elif message.text == "Мій профіль 🥷":
+            bot.send_message(message.chat.id, "You entered your profile!")
+        elif message.text == "Показати під-меню":
+            bot.send_message(message.chat.id, "You entered the sub-menu!", reply_markup=r_sub_menu())
+        elif message.text == "НАЗАД":
+            bot.send_message(message.chat.id, "You are in the main menu!", reply_markup=r_main_menu())
+        elif message.text == "Показати меню":
+            bot.send_message(message.chat.id, "The menu below this message is inline", reply_markup=i_test_menu())
+    except TypeError:
+        bot.send_message(message.chat.id, "Nice try!")
+
+
+if name == "main":
+    bot.polling(none_stop=True)
