@@ -1,0 +1,16 @@
+import random
+
+def main():
+    print("Введіть 5 елементів:")
+    elements = [input() for _ in range(5)]
+    random_element = random.choice(elements)
+    print("Випадковий елемент:", random_element)
+
+def free_princess(castle):
+    print("Замок-код:", ''.join(str(x) for x in castle))
+    print("Принцеса звільнена!")
+
+if name == "main":
+    castle = [1, ["c"], 543, "P", ["n", ["r"]], "i", [[["s"]]]]
+    main()
+    free_princess(castle)

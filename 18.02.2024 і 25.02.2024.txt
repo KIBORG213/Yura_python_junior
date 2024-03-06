@@ -1,0 +1,30 @@
+# Створення команди героїв
+team = [
+    {"ім'я": "Олексій", "речі": ["Ніж", "Вогнегасник", "Пальто"]},
+    {"ім'я": "Юлія", "речі": ["Медична аптечка", "Пальто", "Фонарик"]},
+    {"ім'я": "Вадим", "речі": ["Компас", "Пальто", "Пальатка"]}
+]
+
+# Виведення складу команди та речей
+for герой in team:
+    print(f"Ім'я: {герой['ім'я']}")
+    print("Речі:")
+    for річ in герой['речі']:
+        print(f"- {річ}")
+    print()
+message = [("We ",),"rec",{"r":"o"},{"o":"r"},{"m1":"ded "},{"m3":["a "], "m4":{"m5": "UFO"}}]
+
+decoded_message = message[0][0]
+
+decoded_message += message[2]["r"]
+
+decoded_message += message[3]["o"]
+
+decoded_message += message[4]["m1"]
+
+decoded_message += message[5]["m3"][0]
+
+decoded_message += message[5]["m4"]["m5"]
+
+print(decoded_message)
+

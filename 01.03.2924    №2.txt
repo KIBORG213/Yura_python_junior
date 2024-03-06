@@ -1,0 +1,11 @@
+def calculator(expression):
+    try:
+        result = eval(expression)
+        return result
+    except ZeroDivisionError:
+        return "Ділення на нуль неможливе"
+    except Exception as e:
+        return "Помилка: {}".format(str(e))
+
+expression = input("Введіть вираз (наприклад, 2+2): ")
+print("Результат:", calculator(expression))
